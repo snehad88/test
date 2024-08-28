@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Expert</title>
+</head>
+<body>
+    <h1>Nutrition Expert</h1>
+    <form method="post" action="/">
+        <label for="food_item">Enter Food Item(s):</label>
+        <input type="text" id="food_item" name="food_item" required>
+        <button type="submit">Get Nutrition Info</button>
+    </form>
+
+    {% if nutrition %}
+        <h2>Nutrition Information:</h2>
+        <ul>
+            {% for food in nutrition %}
+            <li>
+                <strong>Food:</strong> {{ food['food_name'] }}<br>
+                <strong>Calories:</strong> {{ food['nf_calories'] }}<br>
+                <strong>Total Fat:</strong> {{ food['nf_total_fat'] }} g<br>
+                <strong>Cholesterol:</strong> {{ food['nf_cholesterol'] }} mg<br>
+                <strong>Sodium:</strong> {{ food['nf_sodium'] }} mg<br>
+                <strong>Total Carbohydrates:</strong> {{ food['nf_total_carbohydrate'] }} g<br>
+                <strong>Protein:</strong> {{ food['nf_protein'] }} g<br>
+            </li>
+            {% endfor %}
+        </ul>
+    {% elif error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
+
+
