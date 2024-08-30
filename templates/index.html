@@ -5,116 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrition Expert</title>
     <style>
-        /* CSS for centering and styling */
-        body, html {
-            height: 100%;
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        .container {
-            text-align: center;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #333333;
-        }
-
-        form {
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-size: 18px;
-            margin-right: 10px;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            width: 60%;
-            margin-right: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        h2 {
-            font-size: 28px;
-            margin-top: 30px;
-            color: #333333;
-        }
-
-        ul {
-            list-style-type: none;
             padding: 0;
         }
-
-        li {
-            margin-bottom: 20px;
-            font-size: 18px;
-            text-align: left;
-            line-height: 1.5;
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
-
-        p {
-            color: red;
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
             font-size: 18px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .form-group button {
+            width: 100%;
+            background-color: #f77b72;
+            color: #fff;
+            border: none;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-group button:hover {
+            background-color: #f55d4c;
+        }
+        .result {
+            margin-top: 30px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .result h2 {
+            color: #444;
+            margin-bottom: 15px;
+        }
+        .result p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .error {
+            color: #ff4d4d;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Nutrition Expert</h1>
-        <form method="post" action="/">
-            <label for="food_item">Enter Food Item(s):</label>
-            <input type="text" id="food_item" name="food_item" required>
-            <button type="submit">Get Nutrition Info</button>
+        <form method="POST">
+            <div class="form-group">
+                <label for="food_item">Enter a food item:</label>
+                <input type="text" id="food_item" name="food_item" placeholder="e.g., Apple, Pizza" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Get Nutrition Expert</button>
+            </div>
         </form>
 
-        {% if nutrition %}
-            <h2>Nutrition Information:</h2>
-            <ul>
-                {% for food in nutrition %}
-                <li>
-                    <strong>Food:</strong> {{ food['food_name'] }}<br>
-                    <strong>Calories:</strong> {{ food['nf_calories'] }}<br>
-                    <strong>Total Fat:</strong> {{ food['nf_total_fat'] }} g<br>
-                    <strong>Cholesterol:</strong> {{ food['nf_cholesterol'] }} mg<br>
-                    <strong>Sodium:</strong> {{ food['nf_sodium'] }} mg<br>
-                    <strong>Total Carbohydrates:</strong> {{ food['nf_total_carbohydrate'] }} g<br>
-                    <strong>Protein:</strong> {{ food['nf_protein'] }} g<br>
-                </li>
-                {% endfor %}
-            </ul>
-        {% elif error %}
-            <p>{{ error }}</p>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% elif nutrition %}
+            <div class="result">
+                <h2>Nutrition Expert for "{{ food_item|capitalize }}"</h2>
+                <p><strong>Calories:</strong> {{ nutrition.nf_calories }} kcal</p>
+                <p><strong>Fat:</strong> {{ nutrition.nf_total_fat }} g</p>
+                <p><strong>Protein:</strong> {{ nutrition.nf_protein }} g</p>
+                <p><strong>Carbohydrates:</strong> {{ nutrition.nf_total_carbohydrate }} g</p>
+                <p><strong>Sugar:</strong> {{ nutrition.nf_sugars }} g</p>
+                <p><strong>Sodium:</strong> {{ nutrition.nf_sodium }} mg</p>
+                <p><strong>Health Status:</strong> {{ health_status }}</p>
+                {% if remedy_message %}
+                    <p><strong>Suggestion:</strong> {{ remedy_message }}</p>
+                {% endif %}
+            </div>
         {% endif %}
     </div>
 </body>
